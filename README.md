@@ -1,10 +1,8 @@
-Jams Music Player
+Driel Music Player
 ===================
-Jams is a free, powerful and elegant music player for Android. Jams used to be a trial/paid app on the Play Store. Due to my lack of adequate free time and Google's <a href="http://phandroid.com/2014/09/18/google-play-now-requires-devs-to-make-their-home-address-public/">new requirement for paid developers to publicly display their home address</a>, I've decided that I can no longer provide the level of support and regular updates that paid users expect from a developer. 
+Driel is a powerful and elegant music player for Android. 
 
-Rather than letting Jams completely die off, I've open sourced the app and hosted it here to encourage other developers to potentially improve it, use it in their own personal projects, and re-release it to users. I will still occasionally update this app based on my free time, but it will probably be beta quality code. 
-
-If you are a developer who's interested in using Jams' current codebase, I encourage you to fork this repository and/or directly contribute to it. If you decide to launch your own fork of Jams on the Play Store, feel free to drop me a line so I can feature it on this GitHub page.
+The code base for this project is from Jams music player - https://github.com/psaravan/JamsMusicPlayer
 
 Screenshots
 ============
@@ -26,22 +24,9 @@ Features
 * Auto-download album art from the internet.
 * 2 different base themes and 9 different color schemes.
 
-Forked Projects
-================
-
-* <a href="http://forum.xda-developers.com/android/apps-games/complete-material-design-acemusic-t2904994">ACEMusic Player (Beta)</a>
-
-If you're using Jams' codebase in your current project/app and would like to have it featured here, email me at saravan.pantham@gmail.com.
-
-Legacy Changelogs (until 2/24/2014)
-======================================
-Check out the <a href="https://github.com/psaravan/JamsMusicPlayer/blob/master/CHANGELOGS.md">CHANGELOGS</a> file. 
-
-<b>Note: </b> Changelogs will no longer be updated in the <a href="http://github.com/psaravan/JamsMusicPlayer/blob/master/CHANGELOGS.md">CHANGELOGS</a> file. Check the individual commit comments for all further update descriptions.
-
 Developed By
 ============
-Saravan Pantham - saravan.pantham@gmail.com
+Fernando de la Cruz Soto - fernando.delacruz@genemsoft.com
 
 Libraries Used
 ===========================
