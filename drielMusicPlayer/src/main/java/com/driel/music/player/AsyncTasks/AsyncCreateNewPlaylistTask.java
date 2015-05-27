@@ -31,6 +31,11 @@ import com.driel.music.player.R;
 import java.util.ArrayList;
 
 public class AsyncCreateNewPlaylistTask extends AsyncTask<String, Integer, Boolean> {
+    private final String[] PROJECTION_PLAYLIST = new String[]{
+            MediaStore.Audio.Playlists._ID,
+            MediaStore.Audio.Playlists.NAME,
+            MediaStore.Audio.Playlists.DATA
+    };
     private Context mContext;
     private Cursor mCursor;
     private String mPlaylistName;
@@ -38,19 +43,12 @@ public class AsyncCreateNewPlaylistTask extends AsyncTask<String, Integer, Boole
     private SharedPreferences sharedPreferences;
     private DBAccessHelper musicLibraryDBHelper;
     private DBAccessHelper musicLibraryPlaylistsDBHelper;
-
     private String mArtist;
     private String mAlbum;
     private String mSong;
     private String mGenre;
     private String mAlbumArtist;
     private String mAddType;
-
-    private final String[] PROJECTION_PLAYLIST = new String[]{
-            MediaStore.Audio.Playlists._ID,
-            MediaStore.Audio.Playlists.NAME,
-            MediaStore.Audio.Playlists.DATA
-    };
 
     public AsyncCreateNewPlaylistTask(Context context,
                                       String playlistName,
@@ -232,7 +230,7 @@ public class AsyncCreateNewPlaylistTask extends AsyncTask<String, Integer, Boole
     }
 
     public void reloadPlaylistEntries(ArrayList<Integer> gMusicSongOrder) {
-    	/*JSONArray jsonArray = null;
+        /*JSONArray jsonArray = null;
     	try {
 			jsonArray = GMusicClientCalls.getPlaylistEntriesWebClient(mContext, mPlaylistId);
 		} catch (IllegalArgumentException e) {

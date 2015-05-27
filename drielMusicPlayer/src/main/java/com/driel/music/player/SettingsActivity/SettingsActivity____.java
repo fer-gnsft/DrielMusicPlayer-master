@@ -60,18 +60,40 @@ import com.driel.music.player.Utils.Common;
 
 public class SettingsActivity____ extends PreferenceActivity {
 
+    static final String ITEM_SKU = "com.jams.music.player.unlock";
     //Context.
     public static Context mContext;
     public static SettingsActivity____ mSettingsActivity;
+    public static Dialog dialogHolder;
+    public static String mAccountName = "";
+    public static boolean accountPicked = false;
+    protected boolean mPurchased;
     private Common mApp;
-
     //Preference Manager.
     private SharedPreferences sharedPreferences;
     private PreferenceManager preferenceManager;
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
 
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+
+            if (result.isFailure()) {
+                Toast.makeText(mContext, R.string.unable_to_purchase, Toast.LENGTH_LONG).show();
+                sharedPreferences.edit().putBoolean("TRIAL", true).apply();
+                return;
+            } else if (purchase.getSku().equals(ITEM_SKU)) {
+
+                Toast.makeText(mContext, R.string.Driel_trial_time_removed, Toast.LENGTH_LONG).show();
+                mApp.getSharedPreferences().edit().putBoolean("TRIAL", false).apply();
+                PreferenceCategory upgradePrefCategory = (PreferenceCategory) preferenceManager.findPreference("upgrade_pref_category");
+                upgradePrefCategory.removeAll();
+
+            }
+
+        }
+
+    };
     //Upgrade Preferences.
     private Preference upgradePreference;
-
     //Customization Preferences.
     private Preference appThemePreference;
     private Preference playerColorSchemePreference;
@@ -81,53 +103,37 @@ public class SettingsActivity____ extends PreferenceActivity {
     private Preference albumArtistsLayoutPreference;
     private Preference albumsLayoutPreference;
     private Preference lockscreenControlsPreference;
-
     //Google Play Music Preferences.
     private Preference chooseGooglePlayMusicAccountPreference;
     private Preference getPinnedSongsPreference;
-
     //Folder View Preferences.
     private Preference defaultFolderPreference;
-
     //Music Libraries Preferences.
     private Preference addMusicLibraryPreference;
     private Preference editMusicLibraryPreference;
     private Preference deleteMusicLibraryPreference;
-
     //Album Art Preferences.
     private Preference albumArtStylePreference;
     private Preference albumArtSourcesPreference;
     private Preference albumArtScanDownloadPreference;
-
     //Music Folders Preferences.
     private Preference selectFoldersPreference;
     private Preference rescanFoldersPreference;
     private Preference scanFrequencyPreference;
-
     //Blacklist Preferences.
     private Preference blacklistManagerPreference;
     private Preference unblacklistAllPreference;
-
     //Scrobbling Preference.
     private Preference scrobblingPreference;
-
     //Audio Settings Preferences.
     private Preference headphonesUnplugActionPreference;
     private Preference crossfadeTracksPreference;
     private Preference crossfadeTracksDurationPreference;
     private Preference equalizerPreference;
-
     //About & Contact Preferences.
     private Preference licensesPreference;
     private Preference contactUsPreference;
-
-    public static Dialog dialogHolder;
-    public static String mAccountName = "";
-    public static boolean accountPicked = false;
     private IabHelper mHelper;
-    static final String ITEM_SKU = "com.jams.music.player.unlock";
-    protected boolean mPurchased;
-
     //Misc.
     private AlertDialog mTrackChangeAnimationDialog;
 
@@ -751,7 +757,7 @@ public class SettingsActivity____ extends PreferenceActivity {
 				startActivity(intent);*/
 
 				/*String[] blacklistManagerChoices = { mContext.getResources().getString(R.string.manage_blacklisted_artists),
-						 							 mContext.getResources().getString(R.string.manage_blacklisted_albums),
+                                                      mContext.getResources().getString(R.string.manage_blacklisted_albums),
 						 							 mContext.getResources().getString(R.string.manage_blacklisted_songs),
 						 							 mContext.getResources().getString(R.string.manage_blacklisted_playlists) };
 
@@ -1115,6 +1121,40 @@ public class SettingsActivity____ extends PreferenceActivity {
 
     }
 
+	/*private void initInAppBilling() {
+
+		String base64EncodedPublicKey = "";
+		base64EncodedPublicKey = Common.uid4 +
+								 Common.uid2 +
+								 Common.uid6 +
+								 Common.uid1 +
+								 Common.uid3 +
+								 Common.uid5;
+    	mHelper = new IabHelper(this, base64EncodedPublicKey);
+    	mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+
+    		@Override
+    		public void onIabSetupFinished(IabResult result) {
+    			if (!result.isSuccess()) {
+    				//In-app billing could not be initialized.
+    				Toast.makeText(mSettingsActivity, R.string.unable_to_reach_google_play, Toast.LENGTH_LONG).show();
+    			} else {
+    				//In-app billing was initialized successfully.
+    				try {
+    					mHelper.launchPurchaseFlow(mSettingsActivity, ITEM_SKU, 10001, mPurchaseFinishedListener, "");
+    				} catch (Exception e) {
+    					e.printStackTrace();
+    					Toast.makeText(mContext, R.string.unable_to_reach_google_play, Toast.LENGTH_LONG).show();
+    					finish();
+    				}
+    			}
+
+    		}
+
+    	});
+
+	}*/
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Result Code 45 = UserRecoverableAuthenticationException from GooglePlayMusicAuthenticationDialog.
@@ -1156,60 +1196,11 @@ public class SettingsActivity____ extends PreferenceActivity {
 
     }
 
-	/*private void initInAppBilling() {
-
-		String base64EncodedPublicKey = "";
-		base64EncodedPublicKey = Common.uid4 +
-								 Common.uid2 +
-								 Common.uid6 +
-								 Common.uid1 +
-								 Common.uid3 +
-								 Common.uid5;
-    	mHelper = new IabHelper(this, base64EncodedPublicKey);
-    	mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-
-    		@Override
-    		public void onIabSetupFinished(IabResult result) {
-    			if (!result.isSuccess()) {
-    				//In-app billing could not be initialized.
-    				Toast.makeText(mSettingsActivity, R.string.unable_to_reach_google_play, Toast.LENGTH_LONG).show();
-    			} else {
-    				//In-app billing was initialized successfully.
-    				try {
-    					mHelper.launchPurchaseFlow(mSettingsActivity, ITEM_SKU, 10001, mPurchaseFinishedListener, "");
-    				} catch (Exception e) {
-    					e.printStackTrace();
-    					Toast.makeText(mContext, R.string.unable_to_reach_google_play, Toast.LENGTH_LONG).show();
-    					finish();
-    				}
-    			}
-
-    		}
-
-    	});
-
-	}*/
-
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-
-            if (result.isFailure()) {
-                Toast.makeText(mContext, R.string.unable_to_purchase, Toast.LENGTH_LONG).show();
-                sharedPreferences.edit().putBoolean("TRIAL", true).apply();
-                return;
-            } else if (purchase.getSku().equals(ITEM_SKU)) {
-
-                Toast.makeText(mContext, R.string.Driel_trial_time_removed, Toast.LENGTH_LONG).show();
-                mApp.getSharedPreferences().edit().putBoolean("TRIAL", false).apply();
-                PreferenceCategory upgradePrefCategory = (PreferenceCategory) preferenceManager.findPreference("upgrade_pref_category");
-                upgradePrefCategory.removeAll();
-
-            }
-
-        }
-
-    };
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     class AsyncUnblacklistAllSongsTask extends AsyncTask<String, Void, Void> {
 
@@ -1240,12 +1231,6 @@ public class SettingsActivity____ extends PreferenceActivity {
             Toast.makeText(mContext, R.string.blacklist_reset, Toast.LENGTH_SHORT).show();
         }
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
     }
 
 }

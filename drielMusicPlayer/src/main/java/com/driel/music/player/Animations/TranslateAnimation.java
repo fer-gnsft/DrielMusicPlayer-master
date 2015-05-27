@@ -35,6 +35,33 @@ public class TranslateAnimation extends android.view.animation.TranslateAnimatio
     private Interpolator mInterpolator;
 
     private boolean mChangeImageResource = false;
+    /**
+     * Translate animation listener.
+     */
+    private AnimationListener translateListener = new AnimationListener() {
+
+        @Override
+        public void onAnimationEnd(Animation arg0) {
+            mView.setVisibility(mFinalVisibility);
+
+            if (mChangeImageResource && (mView instanceof ImageView))
+                ((ImageView) mView).setImageResource(mNewImageResourceId);
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onAnimationStart(Animation arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+    };
 
     /**
      * Use this constructor to animate a view from one location to another.
@@ -95,33 +122,5 @@ public class TranslateAnimation extends android.view.animation.TranslateAnimatio
         mView.startAnimation(this);
 
     }
-
-    /**
-     * Translate animation listener.
-     */
-    private AnimationListener translateListener = new AnimationListener() {
-
-        @Override
-        public void onAnimationEnd(Animation arg0) {
-            mView.setVisibility(mFinalVisibility);
-
-            if (mChangeImageResource && (mView instanceof ImageView))
-                ((ImageView) mView).setImageResource(mNewImageResourceId);
-
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation arg0) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void onAnimationStart(Animation arg0) {
-            // TODO Auto-generated method stub
-
-        }
-
-    };
 
 }

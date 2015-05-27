@@ -59,16 +59,6 @@ import java.util.HashMap;
  */
 public class GridViewCardsAdapter extends SimpleCursorAdapter implements Scrollable {
 
-    private Context mContext;
-    private Common mApp;
-    private GridViewFragment mGridViewFragment;
-    public static GridViewHolder mHolder = null;
-    private String mName = "";
-    private int mWidth;
-    private int mHeight;
-
-    //HashMap for DB column names.
-    private HashMap<Integer, String> mDBColumnsMap;
     public static final int TITLE_TEXT = 0;
     public static final int SOURCE = 1;
     public static final int FILE_PATH = 2;
@@ -78,6 +68,114 @@ public class GridViewCardsAdapter extends SimpleCursorAdapter implements Scrolla
     public static final int FIELD_3 = 6;
     public static final int FIELD_4 = 7;
     public static final int FIELD_5 = 8;
+    public static GridViewHolder mHolder = null;
+    private Context mContext;
+    private Common mApp;
+    private GridViewFragment mGridViewFragment;
+    private String mName = "";
+    private int mWidth;
+    private int mHeight;
+    //HashMap for DB column names.
+    private HashMap<Integer, String> mDBColumnsMap;
+    /**
+     * Menu item click listener for the pop up menu.
+     */
+    private OnMenuItemClickListener popupMenuItemClickListener = new OnMenuItemClickListener() {
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+
+            switch (item.getItemId()) {
+                case R.id.edit_artist_tags:
+                    //Edit Artist Tags.
+                    if (mApp.getSharedPreferences().getBoolean("SHOW_ARTIST_EDIT_CAUTION", true) == true) {
+                        FragmentTransaction transaction = mGridViewFragment.getFragmentManager().beginTransaction();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("EDIT_TYPE", "ARTIST");
+                        bundle.putString("ARTIST", mName);
+                        CautionEditArtistsDialog dialog = new CautionEditArtistsDialog();
+                        dialog.setArguments(bundle);
+                        dialog.show(transaction, "cautionArtistsDialog");
+                    } else {
+                        FragmentTransaction ft = mGridViewFragment.getFragmentManager().beginTransaction();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("EDIT_TYPE", "ARTIST");
+                        bundle.putString("ARTIST", mName);
+                        ID3sArtistEditorDialog dialog = new ID3sArtistEditorDialog();
+                        dialog.setArguments(bundle);
+                        dialog.show(ft, "id3ArtistEditorDialog");
+                    }
+                    break;
+                case R.id.add_to_queue:
+                    //Add to Queue.
+                    AsyncAddToQueueTask task = new AsyncAddToQueueTask(mContext,
+                            mGridViewFragment,
+                            "ARTIST",
+                            mName,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null);
+                    task.execute();
+                    break;
+                case R.id.play_next:
+                    AsyncAddToQueueTask playNextTask = new AsyncAddToQueueTask(mContext,
+                            mGridViewFragment,
+                            "ARTIST",
+                            mName,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null);
+                    playNextTask.execute(new Boolean[]{true});
+                    break;
+                case R.id.add_to_playlist:
+                    //Add to Playlist
+                    FragmentTransaction ft = mGridViewFragment.getFragmentManager().beginTransaction();
+                    AddToPlaylistDialog dialog = new AddToPlaylistDialog();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ADD_TYPE", "ARTIST");
+                    bundle.putString("ARTIST", mName);
+                    dialog.setArguments(bundle);
+                    dialog.show(ft, "AddToPlaylistDialog");
+                    break;
+                case R.id.blacklist_artist:
+                    //Blacklist Artist
+                    mApp.getDBAccessHelper().setBlacklistForArtist(mName, true);
+                    Toast.makeText(mContext, R.string.artist_blacklisted, Toast.LENGTH_SHORT).show();
+
+                    //Update the GridView.
+                    mGridViewFragment.mHandler.post(mGridViewFragment.queryRunnable);
+                    mGridViewFragment.getGridViewAdapter().notifyDataSetChanged();
+
+                    break;
+
+            }
+
+            return false;
+        }
+
+    };
+    /**
+     * Click listener for overflow button.
+     */
+    private OnClickListener overflowClickListener = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            PopupMenu menu = new PopupMenu(mContext, v);
+            menu.inflate(R.menu.artist_overflow_menu);
+            menu.setOnMenuItemClickListener(popupMenuItemClickListener);
+            mName = (String) v.getTag(R.string.artist);
+            menu.show();
+
+        }
+
+    };
 
     public GridViewCardsAdapter(Context context, GridViewFragment gridViewFragment,
                                 HashMap<Integer, String> dbColumnsMap) {
@@ -213,7 +311,7 @@ public class GridViewCardsAdapter extends SimpleCursorAdapter implements Scrolla
         convertView.setTag(R.string.field_5, field5);
 
 		/*//Set the tags for this grid item's overflow button.
-		mHolder.overflowButton.setTag(R.string.title_text, titleText);
+        mHolder.overflowButton.setTag(R.string.title_text, titleText);
 		mHolder.overflowButton.setTag(R.string.source, source);
 		mHolder.overflowButton.setTag(R.string.file_path, filePath);
 		mHolder.overflowButton.setTag(R.string.field_1, field1);
@@ -260,107 +358,6 @@ public class GridViewCardsAdapter extends SimpleCursorAdapter implements Scrolla
 
         return convertView;
     }
-
-    /**
-     * Click listener for overflow button.
-     */
-    private OnClickListener overflowClickListener = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            PopupMenu menu = new PopupMenu(mContext, v);
-            menu.inflate(R.menu.artist_overflow_menu);
-            menu.setOnMenuItemClickListener(popupMenuItemClickListener);
-            mName = (String) v.getTag(R.string.artist);
-            menu.show();
-
-        }
-
-    };
-
-    /**
-     * Menu item click listener for the pop up menu.
-     */
-    private OnMenuItemClickListener popupMenuItemClickListener = new OnMenuItemClickListener() {
-
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-
-            switch (item.getItemId()) {
-                case R.id.edit_artist_tags:
-                    //Edit Artist Tags.
-                    if (mApp.getSharedPreferences().getBoolean("SHOW_ARTIST_EDIT_CAUTION", true) == true) {
-                        FragmentTransaction transaction = mGridViewFragment.getFragmentManager().beginTransaction();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("EDIT_TYPE", "ARTIST");
-                        bundle.putString("ARTIST", mName);
-                        CautionEditArtistsDialog dialog = new CautionEditArtistsDialog();
-                        dialog.setArguments(bundle);
-                        dialog.show(transaction, "cautionArtistsDialog");
-                    } else {
-                        FragmentTransaction ft = mGridViewFragment.getFragmentManager().beginTransaction();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("EDIT_TYPE", "ARTIST");
-                        bundle.putString("ARTIST", mName);
-                        ID3sArtistEditorDialog dialog = new ID3sArtistEditorDialog();
-                        dialog.setArguments(bundle);
-                        dialog.show(ft, "id3ArtistEditorDialog");
-                    }
-                    break;
-                case R.id.add_to_queue:
-                    //Add to Queue.
-                    AsyncAddToQueueTask task = new AsyncAddToQueueTask(mContext,
-                            mGridViewFragment,
-                            "ARTIST",
-                            mName,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null);
-                    task.execute();
-                    break;
-                case R.id.play_next:
-                    AsyncAddToQueueTask playNextTask = new AsyncAddToQueueTask(mContext,
-                            mGridViewFragment,
-                            "ARTIST",
-                            mName,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null);
-                    playNextTask.execute(new Boolean[]{true});
-                    break;
-                case R.id.add_to_playlist:
-                    //Add to Playlist
-                    FragmentTransaction ft = mGridViewFragment.getFragmentManager().beginTransaction();
-                    AddToPlaylistDialog dialog = new AddToPlaylistDialog();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("ADD_TYPE", "ARTIST");
-                    bundle.putString("ARTIST", mName);
-                    dialog.setArguments(bundle);
-                    dialog.show(ft, "AddToPlaylistDialog");
-                    break;
-                case R.id.blacklist_artist:
-                    //Blacklist Artist
-                    mApp.getDBAccessHelper().setBlacklistForArtist(mName, true);
-                    Toast.makeText(mContext, R.string.artist_blacklisted, Toast.LENGTH_SHORT).show();
-
-                    //Update the GridView.
-                    mGridViewFragment.mHandler.post(mGridViewFragment.queryRunnable);
-                    mGridViewFragment.getGridViewAdapter().notifyDataSetChanged();
-
-                    break;
-
-            }
-
-            return false;
-        }
-
-    };
 
     /**
      * Holder subclass for GridViewAdapter.

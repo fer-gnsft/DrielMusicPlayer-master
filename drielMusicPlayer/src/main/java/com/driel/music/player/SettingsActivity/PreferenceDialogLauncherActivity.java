@@ -130,7 +130,7 @@ public class PreferenceDialogLauncherActivity extends FragmentActivity {
             scanFrequencyDialog.show(ft, "scanFrequencyDialog");
 
         } else if (index == 12) {
-			/*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 	        LicensesDialog appThemeDialog = new LicensesDialog();
 	        appThemeDialog.show(ft, "licensesDialog");*/
 

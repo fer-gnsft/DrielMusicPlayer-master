@@ -24,10 +24,6 @@ import com.driel.music.player.EqualizerActivity.EqualizerActivity;
 import com.driel.music.player.R;
 
 public class AsyncApplyEQToPlaylistTask extends AsyncTask<String, Void, Boolean> {
-    private Context mContext;
-    private EqualizerActivity mEqualizerFragment;
-    private ProgressDialog pd;
-
     int max = 10000;
     int progressIncrement;
     int progress = 0;
@@ -35,6 +31,9 @@ public class AsyncApplyEQToPlaylistTask extends AsyncTask<String, Void, Boolean>
     String songArtist = "";
     String titlePlaylist = "";
     String songAlbum = "";
+    private Context mContext;
+    private EqualizerActivity mEqualizerFragment;
+    private ProgressDialog pd;
 
     public AsyncApplyEQToPlaylistTask(Context context, EqualizerActivity fragment, String playlistName) {
         mContext = context;

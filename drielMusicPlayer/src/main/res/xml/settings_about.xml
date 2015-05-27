@@ -2,26 +2,26 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
         android:key="preference_key_about_app"
-        android:title="Purchase ACEMusic"
-        android:summary="Like the app? Purchase it, if you haven't, already ;)" />
+        android:summary="Like the app? Purchase it, if you haven't, already ;)"
+        android:title="Purchase ACEMusic" />
     <Preference
         android:key="preference_key_player_base_license"
-        android:title="Contact me"
-        android:summary="Contact me via e-mail" />
+        android:summary="Contact me via e-mail"
+        android:title="Contact me" />
     <Preference
         android:key="preference_key_about_dev"
-        android:title="Secondary development and maintenance by :"
-        android:summary="Aniruddh Chandratre (ace312)" />
+        android:summary="Aniruddh Chandratre (ace312)"
+        android:title="Secondary development and maintenance by :" />
     <Preference
         android:key="preference_key_special_thanks"
-        android:title="Special Thanks to:"
-        android:summary="Saravan Pantham (Jams)" />
+        android:summary="Saravan Pantham (Jams)"
+        android:title="Special Thanks to:" />
     <Preference
         android:key="preference_key_license"
-        android:title="Base Music Player license"
-        android:summary="View the codebase open source license" />
+        android:summary="View the codebase open source license"
+        android:title="Base Music Player license" />
     <Preference
         android:key="preference_key_license_short"
-        android:title="The in-app notice"
-        android:summary="The required In-app notice." />
+        android:summary="The required In-app notice."
+        android:title="The in-app notice" />
 </PreferenceScreen>

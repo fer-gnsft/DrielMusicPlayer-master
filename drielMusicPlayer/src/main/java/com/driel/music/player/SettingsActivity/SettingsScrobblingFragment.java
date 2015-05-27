@@ -29,6 +29,9 @@ import com.driel.music.player.Utils.Common;
  */
 public class SettingsScrobblingFragment extends Fragment {
 
+    // TO-DO
+    // Implement user selection of the preferences for the scrobbling support
+
     private Context mContext;
     private Common mApp;
     private View mRootView;

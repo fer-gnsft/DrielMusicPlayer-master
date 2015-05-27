@@ -132,7 +132,6 @@ public class AsyncBuildLibraryTask extends AsyncTask<String, String, Void> {
         //Copy SmartUDatabase
 
 
-
         return null;
     }
 

@@ -29,6 +29,9 @@ import com.driel.music.player.Utils.Common;
  */
 public class SettingsBlacklistsFragment extends Fragment {
 
+    // TO-DO
+    // Implement user selection of the preferences for black lists
+
     private Context mContext;
     private Common mApp;
     private View mRootView;

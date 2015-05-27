@@ -25,32 +25,31 @@ import com.driel.music.player.AsyncTasks.AsyncUpdateLargeWidgetTask;
 
 public class LargeWidgetProvider extends AppWidgetProvider {
 
-	private Context mContext;
-	
-	public static final String PREVIOUS_ACTION = "com.driel.music.player.PREVIOUS_ACTION";
-	public static final String PLAY_PAUSE_ACTION = "com.driel.music.player.PLAY_PAUSE_ACTION";
-	public static final String NEXT_ACTION = "com.driel.music.player.NEXT_ACTION";
-	
-	@Override
-	public void onReceive(Context context, Intent intent) {
-		super.onReceive(context, intent); 
-		
-		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-		ComponentName thisAppWidget = new ComponentName(context.getPackageName(), LargeWidgetProvider.class.getName());
-		int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+    public static final String PREVIOUS_ACTION = "com.driel.music.player.PREVIOUS_ACTION";
+    public static final String PLAY_PAUSE_ACTION = "com.driel.music.player.PLAY_PAUSE_ACTION";
+    public static final String NEXT_ACTION = "com.driel.music.player.NEXT_ACTION";
+    private Context mContext;
 
-		onUpdate(context, appWidgetManager, appWidgetIds);
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
 
-	}
-	
-	@Override
-	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-    	mContext = context;
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisAppWidget = new ComponentName(context.getPackageName(), LargeWidgetProvider.class.getName());
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+
+        onUpdate(context, appWidgetManager, appWidgetIds);
+
+    }
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        mContext = context;
         final int N = appWidgetIds.length;
-        
+
         AsyncUpdateLargeWidgetTask task = new AsyncUpdateLargeWidgetTask(mContext, N, appWidgetIds, appWidgetManager);
         task.execute();
-        
+
     }
-    
+
 }

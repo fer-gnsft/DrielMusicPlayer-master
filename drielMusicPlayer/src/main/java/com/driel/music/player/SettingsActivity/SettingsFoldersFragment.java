@@ -29,6 +29,9 @@ import com.driel.music.player.Utils.Common;
  */
 public class SettingsFoldersFragment extends Fragment {
 
+    // TO-DO
+    // Implement user selection of the preferences for the folders to scan music from
+
     private Context mContext;
     private Common mApp;
     private View mRootView;

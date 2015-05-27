@@ -26,10 +26,6 @@ import com.driel.music.player.Utils.Common;
 
 public class AsyncApplyEQToArtistTask extends AsyncTask<String, Void, Void> {
 
-    private Context mContext;
-    private Common mApp;
-    private String mArtist;
-
     int mFiftyHertzLevel;
     int mOneThirtyHertzLevel;
     int mThreeTwentyHertzLevel;
@@ -40,6 +36,9 @@ public class AsyncApplyEQToArtistTask extends AsyncTask<String, Void, Void> {
     int mVirtualizerLevel;
     int mBassBoostLevel;
     int mReverbSetting;
+    private Context mContext;
+    private Common mApp;
+    private String mArtist;
 
     public AsyncApplyEQToArtistTask(Context context,
                                     String artistName,

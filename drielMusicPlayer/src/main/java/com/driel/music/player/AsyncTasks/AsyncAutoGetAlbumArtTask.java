@@ -69,6 +69,9 @@ import java.util.List;
  */
 public class AsyncAutoGetAlbumArtTask extends AsyncTask<String, String, Void> {
 
+    public static ArrayList<String> dataURIsList = new ArrayList<String>();
+    public static ArrayList<String> artistsList = new ArrayList<String>();
+    public static ArrayList<String> albumsList = new ArrayList<String>();
     private Context mContext;
     private Common mApp;
     private Activity mActivity;
@@ -80,14 +83,9 @@ public class AsyncAutoGetAlbumArtTask extends AsyncTask<String, String, Void> {
     private AudioFile audioFile;
     private File file;
     private DBAccessHelper dbHelper;
-
     private ProgressDialog pd;
     private int currentProgress = 0;
     private boolean DIALOG_VISIBLE = true;
-
-    public static ArrayList<String> dataURIsList = new ArrayList<String>();
-    public static ArrayList<String> artistsList = new ArrayList<String>();
-    public static ArrayList<String> albumsList = new ArrayList<String>();
 
     public AsyncAutoGetAlbumArtTask(Context context, Activity activity) {
         mContext = context;

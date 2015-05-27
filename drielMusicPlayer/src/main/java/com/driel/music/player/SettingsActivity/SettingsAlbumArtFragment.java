@@ -29,6 +29,9 @@ import com.driel.music.player.Utils.Common;
  */
 public class SettingsAlbumArtFragment extends Fragment {
 
+    // TO-DO
+    // Implement user selection of the preferences for the album art
+
     private Context mContext;
     private Common mApp;
     private View mRootView;

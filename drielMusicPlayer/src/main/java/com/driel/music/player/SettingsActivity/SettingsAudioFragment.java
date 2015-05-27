@@ -16,17 +16,11 @@
 package com.driel.music.player.SettingsActivity;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.driel.music.player.EqualizerActivity.EqualizerActivity;
 import com.driel.music.player.R;
-import com.driel.music.player.Utils.Common;
 
 /**
  * @author Saravan Pantham
